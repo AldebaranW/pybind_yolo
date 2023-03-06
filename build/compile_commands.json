@@ -1,0 +1,8 @@
+[
+{
+  "directory": "/home/wu/Desktop/test_yolo/build",
+  "command": "/usr/bin/g++  -isystem /usr/include/python3.8 -isystem /home/wu/.local/include -g -std=gnu++17 -o CMakeFiles/test_yolo.dir/process.cpp.o -c /home/wu/Desktop/test_yolo/process.cpp",
+  "file": "/home/wu/Desktop/test_yolo/process.cpp",
+  "output": "CMakeFiles/test_yolo.dir/process.cpp.o"
+}
+]
