@@ -1,3 +1,0 @@
-/home/wu/Desktop/test_yolo/build/CMakeFiles/test_yolo.dir
-/home/wu/Desktop/test_yolo/build/CMakeFiles/edit_cache.dir
-/home/wu/Desktop/test_yolo/build/CMakeFiles/rebuild_cache.dir

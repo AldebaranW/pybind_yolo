@@ -1,4 +1,6 @@
-/build
 /cmake-build-debug
 /.vscode
 /.idea
+/CMakeCache.txt
+/cmake_install.cmake
+/Makefile

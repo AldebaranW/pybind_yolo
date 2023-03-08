@@ -49,8 +49,8 @@ cmake_ninja_workdir = /home/wu/Desktop/test_yolo/cmake-build-debug/
 
 build cmake_object_order_depends_target_test_yolo: phony || CMakeFiles/test_yolo.dir
 
-build CMakeFiles/test_yolo.dir/main.cpp.o: CXX_COMPILER__test_yolo_Debug /home/wu/Desktop/test_yolo/main.cpp || cmake_object_order_depends_target_test_yolo
-  DEP_FILE = CMakeFiles/test_yolo.dir/main.cpp.o.d
+build CMakeFiles/test_yolo.dir/process.cpp.o: CXX_COMPILER__test_yolo_Debug /home/wu/Desktop/test_yolo/process.cpp || cmake_object_order_depends_target_test_yolo
+  DEP_FILE = CMakeFiles/test_yolo.dir/process.cpp.o.d
   FLAGS = -g -fdiagnostics-color=always -std=gnu++17
   INCLUDES = -isystem /usr/include/python3.8 -isystem /home/wu/.local/include
   OBJECT_DIR = CMakeFiles/test_yolo.dir
@@ -64,7 +64,7 @@ build CMakeFiles/test_yolo.dir/main.cpp.o: CXX_COMPILER__test_yolo_Debug /home/w
 #############################################
 # Link the executable test_yolo
 
-build test_yolo: CXX_EXECUTABLE_LINKER__test_yolo_Debug CMakeFiles/test_yolo.dir/main.cpp.o | /usr/lib/x86_64-linux-gnu/libpython3.8.so
+build test_yolo: CXX_EXECUTABLE_LINKER__test_yolo_Debug CMakeFiles/test_yolo.dir/process.cpp.o | /usr/lib/x86_64-linux-gnu/libpython3.8.so
   FLAGS = -g
   LINK_LIBRARIES = /usr/lib/x86_64-linux-gnu/libpython3.8.so
   OBJECT_DIR = CMakeFiles/test_yolo.dir
