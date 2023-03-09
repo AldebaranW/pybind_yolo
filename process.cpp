@@ -12,13 +12,11 @@ namespace py = pybind11;
 
 int myapproxPolyDP(std::vector<cv::Point> contours,std::vector<cv::Point> &rects, double minepsilon,
                 double maxepsilon, int sides);
+std::vector<cv::Point2f> matchPoints(std::vector<cv::Point> poly);
 
-void dataprocess(int class_num, Eigen::MatrixXi mask) {
-    // TODO: 处理识别到的数据
+int dataprocess(int class_num, Eigen::MatrixXi mask) {
     // class_num: 类别
     // mask: 长度不定， 形式为 [[点1坐标]， [点2坐标]， ...]
-    // std::cout << mask.rows() << std::endl;
-    // std::cout << mask.cols() << std::endl;
     cv::Mat mask_;
     std::vector<cv::Point> poly, contours;
     cv::eigen2cv(mask, mask_);
@@ -31,6 +29,9 @@ void dataprocess(int class_num, Eigen::MatrixXi mask) {
     }
     // std::cout << contours << std::endl;
     int res = myapproxPolyDP(contours, poly, 0, 10, 4);
+    if (res == 2) {
+        return false;
+    }
 
     cv::Mat rvec, tvec, rotMat;
     Eigen::Matrix3d R_T;
@@ -44,10 +45,8 @@ void dataprocess(int class_num, Eigen::MatrixXi mask) {
                                     {0., 75., -75.}, 
                                     {0., 75., 75.}, 
                                     {0, -75., 75.}};
-    std::vector<cv::Point2f> poly_ = {{float(poly[0].x), float(poly[0].y)},
-                                        {float(poly[1].x), float(poly[1].y)},
-                                        {float(poly[2].x), float(poly[2].y)},
-                                        {float(poly[3].x), float(poly[3].y)}};
+    
+    std::vector<cv::Point2f> poly_ = matchPoints(poly);
 
     cv::solvePnP(pw, poly_, F_MAT, C_MAT, rvec, tvec);
     cv::Rodrigues(rvec, rotMat);
@@ -63,6 +62,9 @@ void dataprocess(int class_num, Eigen::MatrixXi mask) {
             box_transMat[i * 3 + j] = R_T(i, j);
     for (int i = 0; i < 12; i++) 
         std::cout << box_transMat[i] << std::endl;
+
+    return true;
+
 }
 
 
@@ -88,7 +90,6 @@ int myapproxPolyDP( std::vector<cv::Point> contours,
         }
 
         if (rect1.size() == sides) {
-            std::cout << "test++++++++++";
             rects.resize(sides);
             for (int i = 0; i < sides; i++) {
                 rects[i] = rect1[i];
@@ -126,6 +127,35 @@ int myapproxPolyDP( std::vector<cv::Point> contours,
         }
     }
     return true;
+}
+
+std::vector<cv::Point2f> matchPoints(std::vector<cv::Point> poly) {
+    cv::Point2f center;
+    cv::Moments mu = cv::moments(poly);
+    center = {mu.m10 / mu.m00, mu.m01 / mu.m00};
+    std::vector<double> tg;
+    double tg_[4] = {std::atan2(poly[0].y - center.y, poly[0].x - center.x),
+                    std::atan2(poly[1].y - center.y, poly[1].x - center.x),
+                    std::atan2(poly[2].y - center.y, poly[2].x - center.x),
+                    std::atan2(poly[3].y - center.y, poly[3].x - center.x)};
+    for (int i = 0; i < 4; i++) {
+        tg.push_back(tg_[i]);
+    }
+    std::sort(tg.begin(), tg.end(), 
+        [](double a, double b ){ return a < b; });
+
+    std::vector<cv::Point2f> poly_;
+    for (int i = 0; i < 4; i++) {
+        if (tg[0] == tg_[i]) {
+            poly_ = {
+            {float(poly[i].x), float(poly[i].y)},
+            {float(poly[(i + 1) % 4].x), float(poly[(i + 1) % 4].y)},
+            {float(poly[(i + 2) % 4].x), float(poly[(i + 2) % 4].y)},
+            {float(poly[(i + 3) % 4].x), float(poly[(i + 3) % 4].y)}};
+            break;
+        }
+    }
+    return poly_;
 }
 
 PYBIND11_MODULE(_process, m) {

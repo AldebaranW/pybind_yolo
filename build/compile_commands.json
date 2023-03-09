@@ -1,0 +1,8 @@
+[
+{
+  "directory": "/home/wu/Desktop/test_yolo/build",
+  "command": "/usr/bin/g++ -D_process_EXPORTS -isystem /usr/include/python3.8 -isystem /home/wu/.local/include -isystem /usr/local/include/opencv4 -g -std=gnu++17 -fPIC -fvisibility=hidden -o CMakeFiles/_process.dir/process.cpp.o -c /home/wu/Desktop/test_yolo/process.cpp",
+  "file": "/home/wu/Desktop/test_yolo/process.cpp",
+  "output": "CMakeFiles/_process.dir/process.cpp.o"
+}
+]
